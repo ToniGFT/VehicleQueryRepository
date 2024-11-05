@@ -38,11 +38,11 @@ public class VehicleQueryController {
     }
 
     @GetMapping
-    public Flux<ResponseEntity<Vehicle>> getAllVehicles() {
+    public Flux<Vehicle> getAllVehicles() {
         logger.info("Fetching all vehicles");
         return vehicleQueryService.getAllVehicles()
-                .flatMap(vehicleResponseService::buildOkResponse)
                 .doFirst(() -> logger.info("Starting to fetch all vehicles"))
                 .doOnComplete(() -> logger.info("Successfully fetched all vehicles"));
     }
+
 }

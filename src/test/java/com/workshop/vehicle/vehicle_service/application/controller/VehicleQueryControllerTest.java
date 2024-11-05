@@ -67,13 +67,11 @@ class VehicleQueryControllerTest {
         Vehicle vehicle1 = new Vehicle();
         Vehicle vehicle2 = new Vehicle();
         when(vehicleQueryService.getAllVehicles()).thenReturn(Flux.just(vehicle1, vehicle2));
-        when(vehicleResponseService.buildOkResponse(vehicle1)).thenReturn(Mono.just(ResponseEntity.ok(vehicle1)));
-        when(vehicleResponseService.buildOkResponse(vehicle2)).thenReturn(Mono.just(ResponseEntity.ok(vehicle2)));
 
         // Act & Assert
         StepVerifier.create(vehicleQueryController.getAllVehicles())
-                .expectNext(ResponseEntity.ok(vehicle1))
-                .expectNext(ResponseEntity.ok(vehicle2))
+                .expectNext(vehicle1)
+                .expectNext(vehicle2)
                 .verifyComplete();
     }
 }
