@@ -36,7 +36,7 @@ class VehicleQueryControllerTest {
     @Test
     void getVehicleById_ShouldReturnVehicle_WhenVehicleExists() {
         // Arrange
-        String id = "123";
+        String id = "507f1f77bcf86cd799439011";
         ObjectId vehicleId = new ObjectId(id);
         Vehicle vehicle = new Vehicle();
         when(vehicleQueryService.getVehicleById(vehicleId)).thenReturn(Mono.just(vehicle));
@@ -51,7 +51,7 @@ class VehicleQueryControllerTest {
     @Test
     void getVehicleById_ShouldReturnNotFound_WhenVehicleDoesNotExist() {
         // Arrange
-        String id = "123";
+        String id = "507f1f77bcf86cd799439011";
         ObjectId vehicleId = new ObjectId(id);
         when(vehicleQueryService.getVehicleById(vehicleId)).thenReturn(Mono.empty());
 
@@ -60,6 +60,7 @@ class VehicleQueryControllerTest {
                 .expectNext(ResponseEntity.notFound().build())
                 .verifyComplete();
     }
+
 
     @Test
     void getAllVehicles_ShouldReturnAllVehicles() {
