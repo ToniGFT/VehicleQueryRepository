@@ -27,8 +27,9 @@ public class VehicleQueryController {
         this.vehicleResponseService = vehicleResponseService;
     }
 
-    @GetMapping("/{id}")
-    public Mono<ResponseEntity<Vehicle>> getVehicleById(@PathVariable("id") ObjectId id) {
+    @GetMapping("/{idString}")
+    public Mono<ResponseEntity<Vehicle>> getVehicleById(@PathVariable("idString") String idString) {
+        ObjectId id = new ObjectId(idString);
         logger.info("Fetching vehicle with ID: {}", id);
         return vehicleQueryService.getVehicleById(id)
                 .flatMap(vehicleResponseService::buildOkResponse)

@@ -36,13 +36,14 @@ class VehicleQueryControllerTest {
     @Test
     void getVehicleById_ShouldReturnVehicle_WhenVehicleExists() {
         // Arrange
-        ObjectId vehicleId = new ObjectId();
+        String id = "123";
+        ObjectId vehicleId = new ObjectId(id);
         Vehicle vehicle = new Vehicle();
         when(vehicleQueryService.getVehicleById(vehicleId)).thenReturn(Mono.just(vehicle));
         when(vehicleResponseService.buildOkResponse(vehicle)).thenReturn(Mono.just(ResponseEntity.ok(vehicle)));
 
         // Act & Assert
-        StepVerifier.create(vehicleQueryController.getVehicleById(vehicleId))
+        StepVerifier.create(vehicleQueryController.getVehicleById(id))
                 .expectNext(ResponseEntity.ok(vehicle))
                 .verifyComplete();
     }
@@ -50,11 +51,12 @@ class VehicleQueryControllerTest {
     @Test
     void getVehicleById_ShouldReturnNotFound_WhenVehicleDoesNotExist() {
         // Arrange
-        ObjectId vehicleId = new ObjectId();
+        String id = "123";
+        ObjectId vehicleId = new ObjectId(id);
         when(vehicleQueryService.getVehicleById(vehicleId)).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(vehicleQueryController.getVehicleById(vehicleId))
+        StepVerifier.create(vehicleQueryController.getVehicleById(id))
                 .expectNext(ResponseEntity.notFound().build())
                 .verifyComplete();
     }
