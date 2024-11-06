@@ -106,9 +106,6 @@
                         <phase>test</phase>
                     </execution>
                 </executions>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

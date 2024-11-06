@@ -31,13 +31,17 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build with Maven, excluding E2E tests
-        run: mvn clean verify -Pexclude-e2e-tests  # Usar el perfil para excluir E2E tests
+        run: mvn clean verify -Pexclude-e2e-tests || { echo 'Maven build failed!'; exit 1; }
+
+      - name: Verify JaCoCo report generation
+        run: |
+          ls -R target/site/jacoco/
 
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
-          path: target/site/jacoco/index.html  # Ruta correcta al archivo index.html generado
+          path: target/site/jacoco/index.html
 
       - name: Check test results
         run: |
