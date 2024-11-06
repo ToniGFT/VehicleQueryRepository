@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -81,24 +82,16 @@ class VehicleServiceEndToEndTest {
                 .consumeWith(response -> {
                     List<Vehicle> responseBody = response.getResponseBody();
                     assert responseBody != null;
-                    assertEquals(2, responseBody.size(), "Se esperaban dos vehículos");
 
-                    responseBody.forEach(v -> {
-                        System.out.println("Vehicle found: " + v.getLicensePlate());
-                    });
+                    responseBody.sort(Comparator.comparing(Vehicle::getLicensePlate));
 
-                    Vehicle vehicle1 = responseBody.stream()
-                            .filter(v -> "ABC123".equals(v.getLicensePlate()))
-                            .findFirst()
-                            .orElseThrow(() -> new AssertionError("Vehicle ABC123 not found"));
+                    assertEquals(responseBody.size(), 2);
 
-                    Vehicle vehicle2 = responseBody.stream()
-                            .filter(v -> "XYZ789".equals(v.getLicensePlate()))
-                            .findFirst()
-                            .orElseThrow(() -> new AssertionError("Vehicle XYZ789 not found"));
+                    Vehicle vehicle1 = responseBody.get(0);
+                    Vehicle vehicle2 = responseBody.get(1);
 
-                    assertEquals("ABC123", vehicle1.getLicensePlate(), "La matrícula del primer vehículo no coincide");
-                    assertEquals("XYZ789", vehicle2.getLicensePlate(), "La matrícula del segundo vehículo no coincide");
+                    assertEquals(vehicle1.getLicensePlate(), "ABC123");
+                    assertEquals(vehicle2.getLicensePlate(), "XYZ789");
                 });
     }
 
