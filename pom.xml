@@ -107,7 +107,7 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>prepare-package</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
@@ -117,6 +117,9 @@
                                 <format>XML</format>
                                 <format>HTML</format>
                             </formats>
+                            <excludes>
+                                <exclude>**/*EndToEndTest.java</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                 </executions>
