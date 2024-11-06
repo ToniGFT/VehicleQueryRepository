@@ -99,24 +99,17 @@
                 <version>0.8.7</version>
                 <executions>
                     <execution>
-                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <phase>test</phase>
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>verify</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/jacoco-reports</outputDirectory>
-                            <formats>
-                                <format>XML</format>
-                                <format>HTML</format>
-                            </formats>
                             <excludes>
                                 <exclude>**/*EndToEndTest.java</exclude>
                             </excludes>
