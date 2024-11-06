@@ -79,7 +79,18 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+    <profiles>
+        <profile>
+            <id>exclude-e2e-tests</id>
+            <activation>
+                <activeByDefault>false</activeByDefault> <!-- Este perfil no se activa por defecto -->
+            </activation>
+            <properties>
+                <!-- Excluir los tests E2E de cualquier tipo -->
+                <skip.endtoend.tests>true</skip.endtoend.tests>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
@@ -95,6 +106,17 @@
                         <phase>test</phase> <!-- Se ejecutará durante la fase de prueba -->
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <!-- Excluir todos los tests con "EndToEndTest" en el nombre -->
+                    <excludes>
+                        <exclude>**/*EndToEndTest.java</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
