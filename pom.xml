@@ -99,18 +99,25 @@
                 <version>0.8.12</version>
                 <executions>
                     <execution>
-                        <id>prepare-agent</id> <!-- Asigna un id único -->
+                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                         <phase>test</phase>
                     </execution>
                     <execution>
-                        <id>report</id> <!-- Asigna otro id único -->
+                        <id>report</id>
                         <goals>
                             <goal>report</goal>
                         </goals>
                         <phase>verify</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/jacoco-reports</outputDirectory>
+                            <formats>
+                                <format>XML</format>
+                                <format>HTML</format>
+                            </formats>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

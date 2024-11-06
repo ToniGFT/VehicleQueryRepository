@@ -37,11 +37,14 @@ jobs:
         run: |
           ls -R target/site/jacoco/
 
-      - name: Upload JaCoCo coverage report
+      - name: Compress JaCoCo HTML report
+        run: zip -r jacoco-report.zip target/site/jacoco/
+
+      - name: Upload compressed JaCoCo report
         uses: actions/upload-artifact@v3
         with:
-          name: jacoco-report
-          path: target/site/jacoco/**  # Sube toda la carpeta
+          name: jacoco-html-report
+          path: jacoco-report.zip
 
       - name: Check test results
         run: |
