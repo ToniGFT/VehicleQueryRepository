@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'temurin'  # Usamos 'temurin' para Java 21
+          distribution: 'temurin'
 
       - name: Cache Maven dependencies
         uses: actions/cache@v2
@@ -37,13 +37,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
-          path: target/site/jacoco/index.html  # Cargar el archivo index.html generado por JaCoCo
-
-      - name: Upload Maven Surefire Test Reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: surefire-reports
-          path: target/surefire-reports/
+          path: target/site/jacoco/index.html  # Ruta correcta al archivo index.html generado
 
       - name: Check test results
         run: |
