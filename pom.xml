@@ -107,7 +107,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <outputDirectory>${project.build.directory}/jacoco-report</outputDirectory>
+                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>

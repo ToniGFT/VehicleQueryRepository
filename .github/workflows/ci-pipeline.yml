@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
-          path: target/jacoco-report/index.html  # Ruta corregida al reporte HTML
+          path: target/site/jacoco/index.html  # Cargar el archivo index.html generado por JaCoCo
 
       - name: Upload Maven Surefire Test Reports
         uses: actions/upload-artifact@v3
