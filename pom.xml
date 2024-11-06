@@ -96,7 +96,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
+                <version>0.8.7</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -107,10 +107,10 @@
                     </execution>
                     <execution>
                         <id>report</id>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <phase>verify</phase>
                         <configuration>
                             <outputDirectory>${project.build.directory}/jacoco-reports</outputDirectory>
                             <formats>
