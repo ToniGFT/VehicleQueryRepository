@@ -30,37 +30,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Run Maven with Debug Info
-        run: mvn clean verify -X -Pexclude-e2e-tests  # Agregado para mayor detalle en los logs
+      - name: Build and test with Maven
+        run: mvn clean verify -Pexclude-e2e-tests
 
-      # Eliminar la verificación del directorio de JaCoCo
-      # Quitar el paso que chequea la existencia de `target/site/jacoco/`
-
-      - name: Compress JaCoCo report if it exists
+      - name: Compress JaCoCo report
         run: |
-          if [ -d "target/site/jacoco" ]; then
-            zip -r jacoco-report.zip target/site/jacoco/
+          if [ -d "target/jacoco-reports" ]; then
+            zip -r jacoco-report.zip target/jacoco-reports/
           else
             echo "JaCoCo report directory not found, skipping compression."
+            exit 1
           fi
 
-      - name: Upload compressed JaCoCo report if it exists
-        if: success() && steps.compress.outputs.exists == 'true'
+      - name: Upload compressed JaCoCo report
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-html-report
           path: jacoco-report.zip
-
-      - name: Check test results
-        run: |
-          if grep -q "FAIL" target/surefire-reports/*.txt; then
-            echo "Tests failed!"
-            exit 1
-          else
-            echo "Tests passed!"
-          fi
-
-      - name: Wait for the test environment (Optional)
-        run: |
-          echo "Waiting for environment to settle..."
-          sleep 10
