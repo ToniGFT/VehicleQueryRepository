@@ -83,8 +83,15 @@ class VehicleServiceEndToEndTest {
                     assert responseBody != null;
                     assertEquals(responseBody.size(), 2);
 
-                    Vehicle vehicle1 = responseBody.get(0);
-                    Vehicle vehicle2 = responseBody.get(1);
+                    Vehicle vehicle1 = responseBody.stream()
+                            .filter(v -> "ABC123".equals(v.getLicensePlate()))
+                            .findFirst()
+                            .orElseThrow(() -> new AssertionError("Vehicle ABC123 not found"));
+
+                    Vehicle vehicle2 = responseBody.stream()
+                            .filter(v -> "XYZ789".equals(v.getLicensePlate()))
+                            .findFirst()
+                            .orElseThrow(() -> new AssertionError("Vehicle XYZ789 not found"));
 
                     assertEquals(vehicle1.getLicensePlate(), "ABC123");
                     assertEquals(vehicle2.getLicensePlate(), "XYZ789");
