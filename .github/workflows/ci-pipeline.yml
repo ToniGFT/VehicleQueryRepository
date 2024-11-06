@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Puedes cambiar el sistema operativo si lo prefieres
+    runs-on: windows-latest  # Puedes cambiar el sistema operativo si lo prefieres
 
     steps:
       - name: Check out code
@@ -32,6 +32,11 @@ jobs:
 
       - name: Build with Maven, run tests with JaCoCo, and enable debug
         run: mvn clean verify -X  # -X activa la salida detallada de depuración de Maven
+
+      - name: Check vehicles endpoint response
+        run: |
+          echo "Checking the /vehicles endpoint response"
+          curl -X GET "http://localhost:8080/vehicles" -H "Accept: application/json"  # Verifica la respuesta de la API
 
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v3

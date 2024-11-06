@@ -81,7 +81,11 @@ class VehicleServiceEndToEndTest {
                 .consumeWith(response -> {
                     List<Vehicle> responseBody = response.getResponseBody();
                     assert responseBody != null;
-                    assertEquals(responseBody.size(), 2);
+                    assertEquals(2, responseBody.size(), "Se esperaban dos vehículos");
+
+                    responseBody.forEach(v -> {
+                        System.out.println("Vehicle found: " + v.getLicensePlate());
+                    });
 
                     Vehicle vehicle1 = responseBody.stream()
                             .filter(v -> "ABC123".equals(v.getLicensePlate()))
@@ -93,8 +97,8 @@ class VehicleServiceEndToEndTest {
                             .findFirst()
                             .orElseThrow(() -> new AssertionError("Vehicle XYZ789 not found"));
 
-                    assertEquals(vehicle1.getLicensePlate(), "ABC123");
-                    assertEquals(vehicle2.getLicensePlate(), "XYZ789");
+                    assertEquals("ABC123", vehicle1.getLicensePlate(), "La matrícula del primer vehículo no coincide");
+                    assertEquals("XYZ789", vehicle2.getLicensePlate(), "La matrícula del segundo vehículo no coincide");
                 });
     }
 
