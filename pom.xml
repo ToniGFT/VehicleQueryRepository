@@ -99,16 +99,18 @@
                 <version>0.8.12</version>
                 <executions>
                     <execution>
-                        <phase>test</phase>
+                        <id>prepare-agent</id> <!-- Asigna un id único -->
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <phase>test</phase>
                     </execution>
                     <execution>
-                        <phase>verify</phase>
+                        <id>report</id> <!-- Asigna otro id único -->
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
             </plugin>
