@@ -15,6 +15,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
@@ -30,7 +31,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build with Maven, excluding E2E tests
-        run: mvn clean verify -Dtest=!**/*EndToEndTest.java  # Excluir los tests E2E
+        run: mvn clean verify -Pexclude-e2e-tests  # Usar el perfil para excluir E2E tests
 
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v3
