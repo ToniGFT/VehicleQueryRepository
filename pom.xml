@@ -99,11 +99,16 @@
                 <version>0.8.12</version>
                 <executions>
                     <execution>
+                        <phase>test</phase>
                         <goals>
                             <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
                             <goal>report</goal>
                         </goals>
-                        <phase>test</phase>
                     </execution>
                 </executions>
             </plugin>
