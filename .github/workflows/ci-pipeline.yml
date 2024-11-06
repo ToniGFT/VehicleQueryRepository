@@ -13,37 +13,48 @@ jobs:
     runs-on: ubuntu-latest  # Puedes cambiar el sistema operativo si lo prefieres
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'adoptopenjdk'
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'  # Usamos 'temurin' para Java 21
 
-    - name: Cache Maven dependencies
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-    - name: Build with Maven and run tests with JaCoCo
-      run: mvn clean verify  # Usamos verify en lugar de install para asegurar que JaCoCo también genere el reporte
+      - name: Build with Maven, run tests with JaCoCo, and enable debug
+        run: mvn clean verify -X  # -X activa la salida detallada de depuración de Maven
 
-    - name: Upload JaCoCo coverage report
-      uses: actions/upload-artifact@v3
-      with:
-        name: jacoco-report
-        path: target/site/jacoco/index.html  # El reporte generado por JaCoCo
+      - name: Upload JaCoCo coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/index.html  # El reporte generado por JaCoCo
 
-    - name: Check test results
-      run: |
-        if grep -q "FAIL" target/surefire-reports/*.txt; then
-          echo "Tests failed!"
-          exit 1
-        else
-          echo "Tests passed!"
-        fi
+      - name: Upload Maven Surefire Test Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/  # Cargar los informes de las pruebas para análisis posterior
+
+      - name: Check test results
+        run: |
+          if grep -q "FAIL" target/surefire-reports/*.txt; then
+            echo "Tests failed!"
+            exit 1
+          else
+            echo "Tests passed!"
+          fi
+
+      - name: Wait for the test environment (Optional)
+        run: |
+          echo "Waiting for environment to settle..."
+          sleep 10  # Puedes ajustar el tiempo de espera si crees que la base de datos o servicio necesita más tiempo
