@@ -1,0 +1,49 @@
+name: Java CI with Maven and JaCoCo
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Puedes cambiar el sistema operativo si lo prefieres
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'adoptopenjdk'
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Build with Maven and run tests with JaCoCo
+      run: mvn clean verify  # Usamos verify en lugar de install para asegurar que JaCoCo también genere el reporte
+
+    - name: Upload JaCoCo coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: jacoco-report
+        path: target/site/jacoco/index.html  # El reporte generado por JaCoCo
+
+    - name: Check test results
+      run: |
+        if grep -q "FAIL" target/surefire-reports/*.txt; then
+          echo "Tests failed!"
+          exit 1
+        else
+          echo "Tests passed!"
+        fi
