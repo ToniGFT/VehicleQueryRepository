@@ -112,9 +112,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.2</version>
                 <configuration>
-                    <!-- Excluir todos los tests con "EndToEndTest" en el nombre -->
                     <excludes>
-                        <exclude>**/*EndToEndTest.java</exclude>
+                        <exclude>**/*Generated*</exclude>
+                        <exclude>**/src/test/java/com/workshop/vehicle/vehicle_service/application/VehicleServiceEndToEndTest.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
