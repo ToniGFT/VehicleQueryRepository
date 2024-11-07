@@ -1,5 +1,6 @@
 package com.workshop.vehicle.vehicle_service.domain.model.valueobjects;
 
+import com.workshop.vehicle.vehicle_service.infrastructure.configuration.JacocoAnnotationGenerated;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JacocoAnnotationGenerated
 public class Coordinates {
 
     @NotNull(message = "Latitude is required")

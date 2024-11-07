@@ -1,5 +1,6 @@
 package com.workshop.vehicle.vehicle_service.domain.model.valueobjects;
 
+import com.workshop.vehicle.vehicle_service.infrastructure.configuration.JacocoAnnotationGenerated;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JacocoAnnotationGenerated
 public class MaintenanceDetails {
 
     @NotBlank(message = "Scheduled by field cannot be empty")
