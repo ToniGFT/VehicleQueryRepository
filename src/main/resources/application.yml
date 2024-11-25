@@ -3,4 +3,4 @@ spring:
     name: route
   data:
     mongodb:
-      uri: mongodb+srv://nuriamongodb:NoD7XFXMhzBWEZsb@cluster0.dmnaa.mongodb.net/
+      uri: mongodb+srv://nuriamongodb:NoD7XFXMhzBWEZsb@cluster0.dmnaa.mongodb.net/Workshop?retryWrites=true&w=majority
