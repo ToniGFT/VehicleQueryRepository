@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  vehicle_zookeeper:
+    image: docker.io/confluentinc/cp-zookeeper:latest
+    container_name: vehicle_zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2182
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      kafka_network:
+        aliases:
+          - vehicle_zookeeper
+    ports:
+      - "2182:2182"
+    restart: always
+
+  vehicle_kafka:
+    image: docker.io/confluentinc/cp-kafka:latest
+    container_name: vehicle_kafka
+    depends_on:
+      - vehicle_zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: vehicle_zookeeper:2182
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+
+    networks:
+      kafka_network:
+        aliases:
+          - vehicle_kafka
+    ports:
+      - "9093:9093"
+    restart: always
+
+networks:
+  kafka_network:
+    driver: bridge
