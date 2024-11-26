@@ -25,8 +25,8 @@ public class VehicleEventConsumer {
     private final ObjectMapper objectMapper;
 
     public VehicleEventConsumer(ReceiverOptions<String, String> receiverOptions,
-                              EventProcessorRegistry eventProcessorRegistry,
-                              ObjectMapper objectMapper) {
+                                EventProcessorRegistry eventProcessorRegistry,
+                                ObjectMapper objectMapper) {
         this.receiverOptions = receiverOptions;
         this.eventProcessorRegistry = eventProcessorRegistry;
         this.objectMapper = objectMapper;
@@ -38,17 +38,19 @@ public class VehicleEventConsumer {
                 .receive()
                 .flatMap(record -> {
                     String message = record.value();
+                    logger.info("Received event: {}", message);
                     try {
                         String eventType = extractEventType(message);
                         return eventProcessorRegistry.process(eventType, message)
                                 .doOnSuccess(success -> record.receiverOffset().acknowledge())
+                                .doOnError(e -> logger.error("Error processing event: {}", e.getMessage()))
                                 .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5)));
                     } catch (Exception e) {
                         logger.error("Failed to process record: {}", e.getMessage());
                         record.receiverOffset().acknowledge();
                         return Mono.empty();
                     }
-                })
+                }, 5)
                 .doOnError(e -> logger.error("Global error in Kafka consumer: {}", e.getMessage(), e))
                 .onErrorContinue((throwable, object) -> {
                     logger.error("Skipping record due to error: {}", throwable.getMessage());
@@ -64,3 +66,4 @@ public class VehicleEventConsumer {
         return node.get("type").asText();
     }
 }
+

@@ -1,6 +1,8 @@
 package com.workshop.vehicle.vehicle_service.infrastructure.messaging.kafka.strategies;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.workshop.vehicle.vehicle_service.application.service.kafka.VehicleEventProcessor;
+import com.workshop.vehicle.vehicle_service.domain.events.VehicleUpdatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

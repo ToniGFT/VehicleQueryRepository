@@ -23,4 +23,4 @@ spring:
 
 kafka:
   topics:
-    route-events: vehicle-events
+    vehicle-events: vehicle-events

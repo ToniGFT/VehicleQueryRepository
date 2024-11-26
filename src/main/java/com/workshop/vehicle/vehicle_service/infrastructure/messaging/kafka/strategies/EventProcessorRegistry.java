@@ -1,6 +1,5 @@
 package com.workshop.vehicle.vehicle_service.infrastructure.messaging.kafka.strategies;
 
-import com.workshop.vehicle.vehicle_service.infrastructure.messaging.kafka.strategies.EventProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,6 +18,9 @@ public class EventProcessorRegistry {
     private final Map<String, EventProcessor<?>> processors;
 
     public EventProcessorRegistry(List<EventProcessor<?>> processorList) {
+        if (processorList == null || processorList.isEmpty()) {
+            throw new IllegalArgumentException("No event processors found!");
+        }
         this.processors = processorList.stream()
                 .collect(Collectors.toMap(
                         processor -> processor.getClass().getAnnotation(Component.class).value(),
